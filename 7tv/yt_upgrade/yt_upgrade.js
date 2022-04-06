@@ -1,0 +1,1 @@
+window.addEventListener("DOMContentLoaded",(()=>{document.getElementById("interact").addEventListener("click",(()=>{chrome.permissions.request({origins:["*://*.youtube.com/*"]},(e=>{e&&window.close()}))}))}));
