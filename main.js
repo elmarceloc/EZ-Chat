@@ -87,7 +87,7 @@ async function createWindow () {
         prompt({
           title: 'Enter your twitch username',
           label: 'Twitch username:',
-          value: 'xqcow',
+          value: channel,
           type: 'input',
           alwaysOnTop: true,
         })
@@ -101,8 +101,6 @@ async function createWindow () {
               });
 
               chatWindow.loadURL('https://www.twitch.tv/popout/'+ channel +'/chat?popout=')
-
-              chatWindow.webContents.on('dom-ready', () => loadEmotes(chatWindow) )
             }
         })
         .catch(console.error);
@@ -153,7 +151,7 @@ async function createWindow () {
   chatWindow.webContents.on('dom-ready', () => loadEmotes(chatWindow) )
     
   // Open the DevTools.
- // if (isDev) chatWindow.webContents.openDevTools()
+  if (isDev) chatWindow.webContents.openDevTools()
 }
 
 function loadEmotes(window) {
