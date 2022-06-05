@@ -1,7 +1,7 @@
 
 const someStyle = `
 <style>
-body{
+html, body{
     background: #131315!important;
 }
 .inner{
