@@ -119,8 +119,8 @@ async function getEmotes() {
     } else {
         totalErrors.push("Error getting global bttv emotes");
     }
-    if (sevenTVEnabled == 1) {
-        // get all 7TV emotes
+
+    // get all 7TV emotes
         res = await fetch(proxyurl + `https://api.7tv.app/v2/users/${channel}/emotes`, {
             method: "GET",
         }).then(returnResponse, logError);
@@ -195,7 +195,6 @@ async function getEmotes() {
         })
         
 
-    }
     if (totalErrors.length > 0) {
         totalErrors.forEach((error) => {
             console.error(error);

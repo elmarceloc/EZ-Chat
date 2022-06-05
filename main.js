@@ -371,7 +371,7 @@ async function createWindow () {
   // loads BTTV, FFZ and 7tv
   //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
   const response = await axios.get(
-    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js'
+    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
   )
   console.log(response)
 
