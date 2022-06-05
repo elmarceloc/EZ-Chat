@@ -46,6 +46,10 @@ button{
 .good{
     border-top: 11px solid rgb(44, 44, 44)!important;
 }
+.Dashboard.paused * {
+    color: none!important;
+    filter: none!important
+}
 </style>
 `;
 
@@ -223,6 +227,7 @@ function escapeRegex(string) {
 }
 
 
+
 var chit = document.querySelectorAll('.inner')[0];
 var chat = document.querySelectorAll('.inner')[1];
 
@@ -247,7 +252,17 @@ const observer = new MutationObserver((mutations) => {
                         //.replace(/<img[^>]*>/g, "")
                         newMessageHTML = newMessageHTML.replace(regexp, `<img class="emoticon" src="${emote.emoteURL}"></img>`);
                     }
-                    
+
+                    regexp = new RegExp("( |^)" + "&lt;3" + "\\b", "g");
+                    newMessageHTML = newMessageHTML.replace(regexp, `<img class="emoticon" src="https://static-cdn.jtvnw.net/emoticons/v1/9/4.0"></img>`);
+		
+                    regexp = new RegExp("\\b" + "D:" + "( |$)", "g");
+                    newMessageHTML = newMessageHTML.replace(regexp, `<img class="emoticon" src="https://cdn.betterttv.net/emote/55028cd2135896936880fdd7/3x"></img>`);
+
+                    regexp = new RegExp(":tf:", "g");
+                    newMessageHTML = newMessageHTML.replace(regexp, `<img class="emoticon" src="https://cdn.betterttv.net/emote/54fa8f1401e468494b85b537/3x"></img>`);
+
+        
                     var $userInfo = document.createElement('span');
                     $userInfo.classList.add('user_info');
                     

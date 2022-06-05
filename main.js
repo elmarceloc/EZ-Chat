@@ -104,7 +104,7 @@ async function createWindow () {
             });   
           },
         },
-        {
+        /*{
           label: 'Open stream in Browser',
           click: function(item, browser) {
             shell.openExternal("https://www.twitch.tv/"+channel)
@@ -115,7 +115,7 @@ async function createWindow () {
           click: function(item, browser) {
             activityFeedWindow = createPanel(100, 100, `https://player.twitch.tv/?channel=${channel}&parent=twitch.tv`)
           }
-        },
+        },*/
        /* {
           label: "Paneles",
           submenu: [
@@ -338,8 +338,8 @@ async function createWindow () {
   //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
   
 
-  var script = fs.readFileSync('script_prod.js', 'utf8');
-  console.log(script)
+  /*var script = fs.readFileSync('script_prod.js', 'utf8');
+  console.log(script)*/
 
 
   chatWindow.webContents.on('dom-ready', async () => {

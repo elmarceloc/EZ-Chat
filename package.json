@@ -1,6 +1,6 @@
 {
   "name": "EZChat",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
@@ -33,12 +33,12 @@
   },
   "build": {
     "extraResources": [
-      "./7tv"
+      "script_prod.js"
     ],
     "appId": "com.elmarceloc.ezchat",
     "win": {
       "target": "nsis",
-      "icon": "icon2.ico"
+      "icon": "icon.png"
     }
   }
 }
