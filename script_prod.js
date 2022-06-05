@@ -1,5 +1,5 @@
-const style = `
-const someStyle = \`
+
+const someStyle = `
 <style>
 .inner{
     background: #131315!important;
@@ -27,10 +27,10 @@ const someStyle = \`
     border: none!important;
 }
 </style>
-\`;
+`;
 
 document.head.insertAdjacentHTML('beforeend', someStyle);
-`
+
 
 const sevenTVEnabled = 1
 

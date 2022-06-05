@@ -5,8 +5,8 @@ const isDev = require("electron-is-dev");
 const windowStateKeeper = require('electron-window-state');
 const settings = require("electron-settings");
 const prompt = require('electron-prompt');
-
-const injected = require('./script_prod.js')
+const axios = require('axios');
+//const injected = require('./script_prod.js')
 
 // https://www.twitch.tv/subs/saikomicart
 
@@ -48,7 +48,9 @@ function createPanel(width, height, url) {
   return window
 }
   
-  
+
+
+
 var chatWindow;
 
 async function createWindow () {
@@ -368,13 +370,17 @@ async function createWindow () {
   chatWindow.loadURL(`https://chitchat.ma.pe/${channel}`)
   // loads BTTV, FFZ and 7tv
   //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
+  const response = await axios.get(
+    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js'
+  )
+  console.log(response)
 
   chatWindow.webContents.on('dom-ready', () => {
     //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
     //loadEmotes(chatWindow)
 
-    chatWindow.webContents.executeJavaScript(injected.style)
+    chatWindow.webContents.executeJavaScript(response)
 
   
   })
