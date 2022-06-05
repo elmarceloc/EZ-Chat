@@ -26,13 +26,14 @@ const someStyle = `
 .title{
     border: none!important;
 }
+.Message{
+    padding-left: 6px!important;
+    padding-right: 10px!important;
+}
 </style>
 `;
 
 document.head.insertAdjacentHTML('beforeend', someStyle);
-
-
-const sevenTVEnabled = 1
 
 // Get URL Parameters (Credit to html-online.com)
 function getUrlVars() {
@@ -121,7 +122,7 @@ async function getEmotes() {
     }
 
     // get all 7TV emotes
-        res = await fetch(proxyurl + `https://api.7tv.app/v2/users/${channel}/emotes`, {
+        res = await fetch( `https://api.7tv.app/v2/users/${channel}/emotes`, {
             method: "GET",
         }).then(returnResponse, logError);
         if (!res.error || res.status == 200) {
@@ -140,7 +141,7 @@ async function getEmotes() {
             totalErrors.push("Error getting 7tv emotes");
         }
         // get all 7TV global emotes
-        res = await fetch(proxyurl + `https://api.7tv.app/v2/emotes/global`, {
+        res = await fetch(`https://api.7tv.app/v2/emotes/global`, {
             method: "GET",
         }).then(returnResponse, logError);
         if (!res.error || res.status == 200) {
