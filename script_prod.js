@@ -68,48 +68,9 @@ async function getEmotes() {
     // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
     const proxyurl = "https://tpbcors.herokuapp.com/";
     let totalErrors = [];
-    // get FFZ emotes
-    let res = await fetch(proxyurl + "https://api.frankerfacez.com/v1/room/" + channel, {
-        method: "GET",
-    }).then(returnResponse, logError);
-    if (!res.error) {
-        let setName = Object.keys(res.sets);
-        for (var k = 0; k < setName.length; k++) {
-            for (var i = 0; i < res.sets[setName[k]].emoticons.length; i++) {
-                const emoteURL = res.sets[setName[k]].emoticons[i].urls["2"]
-                    ? res.sets[setName[k]].emoticons[i].urls["2"]
-                    : res.sets[setName[k]].emoticons[i].urls["1"];
-                let emote = {
-                    emoteName: res.sets[setName[k]].emoticons[i].name,
-                    emoteURL: "https://" + emoteURL.split("//").pop(),
-                };
-                emotes.push(emote);
-            }
-        }
-    } else {
-        totalErrors.push("Error getting ffz emotes");
-    }
-    // get all global ffz emotes
-    res = await fetch(proxyurl + "https://api.frankerfacez.com/v1/set/global", {
-        method: "GET",
-    }).then(returnResponse, logError);
-    if (!res.error) {
-        let setName = Object.keys(res.sets);
-        for (var k = 0; k < setName.length; k++) {
-            for (var i = 0; i < res.sets[setName[k]].emoticons.length; i++) {
-                const emoteURL = res.sets[setName[k]].emoticons[i].urls["2"]
-                    ? res.sets[setName[k]].emoticons[i].urls["2"]
-                    : res.sets[setName[k]].emoticons[i].urls["1"];
-                let emote = {
-                    emoteName: res.sets[setName[k]].emoticons[i].name,
-                    emoteURL: "https://" + emoteURL.split("//").pop(),
-                };
-                emotes.push(emote);
-            }
-        }
-    }
+   
     // get channel twitch ID
-     res = await fetch(proxyurl + "https://api.ivr.fi/twitch/resolve/" + channel, {
+    let res = await fetch(proxyurl + "https://api.ivr.fi/twitch/resolve/" + channel, {
         method: "GET",
         headers: { "User-Agent": "api.roaringiron.com/emoteoverlay" },
     }).then(returnResponse, logError);

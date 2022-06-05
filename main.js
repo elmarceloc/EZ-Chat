@@ -380,7 +380,7 @@ async function createWindow () {
     
     //loadEmotes(chatWindow)
 
-    chatWindow.webContents.executeJavaScript(response)
+    chatWindow.webContents.executeJavaScript(response.data)
 
   
   })
