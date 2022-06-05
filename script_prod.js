@@ -1,6 +1,9 @@
 
 const someStyle = `
 <style>
+body{
+    background: #131315!important;
+}
 .inner{
     background: #131315!important;
 }
@@ -101,7 +104,7 @@ async function getEmotes() {
         for (var i = 0; i < res.sharedEmotes.length; i++) {
             let emote = {
                 emoteName: res.sharedEmotes[i].code,
-                emoteURL: `https://cdn.betterttv.net/emote/${res.sharedEmotes[i].id}/1x`,
+                emoteURL: `https://cdn.betterttv.net/emote/${res.sharedEmotes[i].id}/2x`,
             };
             emotes.push(emote);
         }
@@ -117,7 +120,7 @@ async function getEmotes() {
         for (var i = 0; i < res.length; i++) {
             let emote = {
                 emoteName: res[i].code,
-                emoteURL: `https://cdn.betterttv.net/emote/${res[i].id}/1x`,
+                emoteURL: `https://cdn.betterttv.net/emote/${res[i].id}/2x`,
             };
             emotes.push(emote);
         }
@@ -182,7 +185,7 @@ async function getEmotes() {
                 Object.entries(channel.badge_sets).forEach(badge => {
 
                     Object.entries(badge[1].versions).forEach((v,index) => {
-                        badges[badge[0] + '-' + (index+1)] = v[1].image_url_1x;
+                        badges[badge[0] + '-' + (index+1)] = v[1].image_url_4x;
                     });
                 });
 

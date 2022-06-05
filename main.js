@@ -41,9 +41,6 @@ function createPanel(width, height, url) {
 
   return window
 }
-  
-
-
 
 var chatWindow;
 
@@ -367,14 +364,15 @@ async function createWindow () {
   const response = await axios.get(
     'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
   )
-  console.log(response)
 
+  console.log('script loaded',response.data.length)
   chatWindow.webContents.on('dom-ready', () => {
     //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
     //loadEmotes(chatWindow)
 
     chatWindow.webContents.executeJavaScript(response.data)
+
   
   })
   // open urls in the default browser
