@@ -14,7 +14,6 @@ body{
 
 .title{
     background: #131315!important;
-    -webkit-app-region: drag;
 
 }
 
@@ -29,6 +28,11 @@ body{
 
 .title{
     border: none!important;
+    margin: 0px!important;
+    padding: 0!important;
+}
+.youtube{
+    display: block!important;
 }
 .Message{
     padding-left: 6px!important;
@@ -38,6 +42,9 @@ button{
     font-size: 12px!important;
     border: none!important;
     border-radius: 2px!important;
+}
+.good{
+    border-top: 11px solid rgb(44, 44, 44)!important;
 }
 </style>
 `;

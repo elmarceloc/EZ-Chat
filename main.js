@@ -6,6 +6,7 @@ const windowStateKeeper = require('electron-window-state');
 const settings = require("electron-settings");
 const prompt = require('electron-prompt');
 const axios = require('axios');
+const fs = require('fs');
 //const injected = require('./script_prod.js')
 
 // https://www.twitch.tv/subs/saikomicart
@@ -13,34 +14,6 @@ const axios = require('axios');
 isDarkTheme = true;
 
 var service = 'streamelements'
-
-function createPanel(width, height, url) {
-
-
-  let windowState = windowStateKeeper({
-    defaultWidth: width,
-    defaultHeight: height
-  });
-  
-  // Create the browser window.
-  const window = new BrowserWindow({
-    x: windowState.x,
-    y: windowState.y,
-    width: windowState.width,
-    height: windowState.height,
-    parent: chatWindow,
-    autoHideMenuBar: true,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
-
-  windowState.manage(window);
-  
-  window.loadURL(url)
-
-  return window
-}
 
 var chatWindow;
 
@@ -58,7 +31,7 @@ async function createWindow () {
     y: chatWindowState.y,
     width: chatWindowState.width,
     height: chatWindowState.height,
-    frame: false,
+    //frame: false,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -85,6 +58,7 @@ async function createWindow () {
   const menu = [
     {
       label: 'Channel',
+      accelerator: process.platform === 'darwin' ? 'Alt+Cmd+C' : 'Alt+Ctrl+C',
       click() {
         prompt({
           title: 'Enter your twitch username',
@@ -363,16 +337,19 @@ async function createWindow () {
   // loads BTTV, FFZ and 7tv
   //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
   
-  console.log('script loaded',response.data.length)
-  chatWindow.webContents.on('dom-ready', async () => {
-    const response = await axios.get(
-      'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
-    )
+
+  var script = fs.readFileSync('script_prod.js', 'utf8');
+  console.log(script)
+
+  /*script = await axios.get(
+    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
+  )/*/
+  chatWindow.webContents.on('dom-ready', () => {
     //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
     //loadEmotes(chatWindow)
 
-    chatWindow.webContents.executeJavaScript(response.data)
+    chatWindow.webContents.executeJavaScript(script)
 
   
   })
