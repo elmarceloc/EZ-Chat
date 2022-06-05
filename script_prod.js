@@ -30,6 +30,11 @@ const someStyle = `
     padding-left: 6px!important;
     padding-right: 10px!important;
 }
+button{
+    font-size: 5px!important;
+    border: none!important;
+    border-radius: 2px!important;
+}
 </style>
 `;
 
