@@ -50,6 +50,10 @@ button{
     color: none!important;
     filter: none!important
 }
+.connectLoading{
+    background-color: #131315!important;
+    background-image: none!important
+}
 </style>
 `;
 

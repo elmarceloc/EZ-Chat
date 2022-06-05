@@ -7,6 +7,8 @@ const settings = require("electron-settings");
 const prompt = require('electron-prompt');
 const axios = require('axios');
 const fs = require('fs');
+const contextMenu = require('electron-context-menu');
+
 //const injected = require('./script_prod.js')
 
 // https://www.twitch.tv/subs/saikomicart
@@ -390,6 +392,22 @@ async function createWindow () {
   console.log(script)*/
 
 
+  // Add an item to the context menu that appears only when you click on an image
+  contextMenu({
+    prepend: (defaultActions, parameters, browserWindow) => [{
+      label: 'Ver Mensajes',
+      click: (menuItem, browserWindow, event) => {
+        console.log(parameters)
+        
+        chatWindow.webContents.executeJavaScript(`
+        const username = document.elementFromPoint(${parameters.x}, ${parameters.y}).innerText;
+        
+        window.open('https://www.twitch.tv/popout/${channel}username/viewercard/'+username, '_blank').focus();
+        `)
+      }
+    }]
+  });
+
   chatWindow.webContents.on('dom-ready', async () => {
     
     //loadEmotes(chatWindow)
@@ -401,12 +419,8 @@ async function createWindow () {
     } catch (error) {
       console.log('using file script')
     }
-    
-    setTimeout(function() {
-      
+          
       chatWindow.webContents.executeJavaScript(script)
-      console.log('injected')
-    },10000)
   
   })
   // open urls in the default browser
