@@ -121,7 +121,7 @@ async function getEmotes() {
         totalErrors.push("Error getting bttv emotes");
     }
     // global bttv emotes
-    res = await fetch(proxyurl + "https://api.betterttv.net/3/cached/emotes/global", {
+    res = await fetch("https://api.betterttv.net/3/cached/emotes/global", {
         method: "GET",
     }).then(returnResponse, logError);
     if (!res.message) {
@@ -341,5 +341,3 @@ observer.observe(chit, config);
 observer.observe(chat, config);
 
 getEmotes() 
-
-console.log('script loaded')
