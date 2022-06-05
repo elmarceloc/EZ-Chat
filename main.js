@@ -14,12 +14,6 @@ isDarkTheme = true;
 
 var service = 'streamelements'
 
-// electron hot reaload
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-  hardResetMethod: 'exit'
-});
-
 function createPanel(width, height, url) {
 
 
@@ -381,9 +375,13 @@ async function createWindow () {
     //loadEmotes(chatWindow)
 
     chatWindow.webContents.executeJavaScript(response.data)
-
   
   })
+  // open urls in the default browser
+  chatWindow.webContents.on('new-window', function(e, url) {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
 
   // Open the DevTools.
   if (isDev) chatWindow.webContents.openDevTools()

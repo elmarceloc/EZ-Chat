@@ -31,7 +31,7 @@ const someStyle = `
     padding-right: 10px!important;
 }
 button{
-    font-size: 5px!important;
+    font-size: 12px!important;
     border: none!important;
     border-radius: 2px!important;
 }
