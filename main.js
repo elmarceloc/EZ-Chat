@@ -129,13 +129,28 @@ async function createWindow () {
           },
         },
         {
-          role: 'separator',
+          type: 'separator',
+        },
+        {
+          label: 'Activity Feed',
+          click: function () {
+            donationsWindow = createPanel(460, 620, `https://yoink.streamelements.com/activity-feed?activitiesToolbar=false&popout=true&theme=dark&withSetupWizard=false`)
+          },
         },
         {
           label: "Edit stream info",
           click: function () {
               editStreamInfoWindow = createPanel(460, 620, `${twitchPanelBaseURL}/edit-stream-info`)             
           }
+        },
+        {
+          label: "Quick Actions",
+          click: function () {
+            quickActionsWindow = createPanel(460, 620, `${twitchPanelBaseURL}/quick-actions`)
+          },
+        },
+        {
+          type: 'separator',
         },
         /*{
           label: 'Open stream in Browser',

@@ -1,6 +1,6 @@
 {
   "name": "EZChat",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
