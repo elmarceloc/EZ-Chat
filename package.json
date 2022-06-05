@@ -25,8 +25,10 @@
   "dependencies": {
     "electron-is-dev": "^2.0.0",
     "electron-prompt": "^1.7.0",
+    "electron-reload": "^2.0.0-alpha.1",
     "electron-settings": "^4.0.2",
-    "electron-window-state": "^5.0.3"
+    "electron-window-state": "^5.0.3",
+    "node-twitch": "^0.4.5"
   },
   "build": {
     "extraResources": [
@@ -35,7 +37,7 @@
     "appId": "com.elmarceloc.ezchat",
     "win": {
       "target": "nsis",
-      "icon": "icon.ico"
+      "icon": "icon2.ico"
     }
   }
 }

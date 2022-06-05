@@ -9,3 +9,6 @@
 |BTTV |✅|✅|Manual installation|✅|✅|✅|✅|
 |FFZ |✅|✅|Manual installation|✅|✅|✅|✅|
 |7tv |✅|✅|Manual installation|FFZ Addon|FFZ Addon|
+|Stream Player |✅| Require Streamlink |❌|❌|❌|
+|Create Clip |❌| ✅ |❌|❌|❌|
+|Multiple Chats |❌| ✅ |❌|❌|❌|

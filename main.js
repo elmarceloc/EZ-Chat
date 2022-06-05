@@ -1,51 +1,55 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, session, Menu} = require('electron')
+const {app, BrowserWindow, session, Menu, shell} = require('electron')
 const path = require('path')
 const isDev = require("electron-is-dev");
 const windowStateKeeper = require('electron-window-state');
 const settings = require("electron-settings");
 const prompt = require('electron-prompt');
 
+const injected = require('./script_prod.js')
+
+// https://www.twitch.tv/subs/saikomicart
+
 isDarkTheme = true;
 
-/**
- * Generates a script that can be injected to enable the twitch's Better TTV emotes.
- * @param isDarkTheme if streamlabs is in dark mode
- * @return a javascript script
- */
+var service = 'streamelements'
 
-function enableBTTVEmotesScript(isDarkTheme) {
-    /*eslint-disable */
-  return `
-  localStorage.setItem('bttv_clickTwitchEmotes', true);
-  localStorage.setItem('bttv_darkenedMode', ${
-    isDarkTheme ? 'true' : 'false'
+// electron hot reaload
+require('electron-reload')(__dirname, {
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+  hardResetMethod: 'exit'
+});
+
+function createPanel(width, height, url) {
+
+
+  let windowState = windowStateKeeper({
+    defaultWidth: width,
+    defaultHeight: height
   });
   
-  var bttvscript = document.createElement('script');
-  bttvscript.setAttribute('src','https://cdn.betterttv.net/betterttv.js');
-  document.head.appendChild(bttvscript);
+  // Create the browser window.
+  const window = new BrowserWindow({
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
+    height: windowState.height,
+    parent: chatWindow,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
+
+  windowState.manage(window);
   
-  function loadLazyEmotes() {
-    var els = document.getElementsByClassName('lazy-emote');
-  
-    Array.prototype.forEach.call(els, el => {
-      const src = el.getAttribute('data-src');
-      if (el.src !== 'https:' + src) el.src = src;
-    });
-  
-    setTimeout(loadLazyEmotes, 1000);
-  }
-  
-  loadLazyEmotes();
-  0;
-  `
-    /*eslint-enable */
+  window.loadURL(url)
+
+  return window
 }
-
-const extensionPath = __dirname.split("app.asar")[0] + "7tv";
-const localPath = "D:/proyectos/twitch-chat-pc/7tv"
-
+  
+  
+var chatWindow;
 
 async function createWindow () {
 
@@ -56,7 +60,7 @@ async function createWindow () {
   
 
   // Create the browser window.
-  const chatWindow = new BrowserWindow({
+  chatWindow = new BrowserWindow({
     x: chatWindowState.x,
     y: chatWindowState.y,
     width: chatWindowState.width,
@@ -69,8 +73,12 @@ async function createWindow () {
 
   chatWindowState.manage(chatWindow);
 
-  const alwaysontop = await settings.get("menu.alwaysontop")
-  const channel = await settings.get("twitch.channel") || 'xqcow'
+  var channel = await settings.get("twitch.channel") || 'xqc';
+
+  const twitchPanelBaseURL = `https://dashboard.twitch.tv/popout/u/${channel}/stream-manager`;
+  const alwaysontop = await settings.get("menu.alwaysontop");
+
+  // panels
 
   console.log(alwaysontop, channel)
 
@@ -91,16 +99,17 @@ async function createWindow () {
           type: 'input',
           alwaysOnTop: true,
         })
-        .then((channel) => {
-            if(channel === null) {
+        .then((newChannel) => {
+            if(newChannel === null) {
                 
             } else {
+              channel = newChannel
 
               settings.set("twitch", {
-                channel: channel,
+                channel: newChannel,
               });
-
-              chatWindow.loadURL('https://www.twitch.tv/popout/'+ channel +'/chat?popout=')
+              chatWindow.loadURL('https://chitchat.ma.pe/' + newChannel);
+              //chatWindow.loadURL('https://www.twitch.tv/popout/'+ newChannel +'/chat?popout=')
             }
         })
         .catch(console.error);
@@ -127,6 +136,218 @@ async function createWindow () {
             });   
           },
         },
+        {
+          label: 'Open stream in Browser',
+          click: function(item, browser) {
+            shell.openExternal("https://www.twitch.tv/"+channel)
+          }
+        },
+        {
+          label: 'Open Player',
+          click: function(item, browser) {
+            activityFeedWindow = createPanel(100, 100, `https://player.twitch.tv/?channel=${channel}&parent=twitch.tv`)
+          }
+        },
+       /* {
+          label: "Paneles",
+          submenu: [
+            {
+              label: "Activity Feed",
+              type: "checkbox",
+              checked: activityFeed,
+              click: function (item, browser) {
+                url = ''
+                if (service == 'twitch') {
+                  url = `${twitchPanelBaseURL}/activity-feed?uuid=1`
+                }else if(service == 'streamelements'){
+                  url = 'https://yoink.streamelements.com/activity-feed?activitiesToolbar=false&popout=true&theme=dark&withSetupWizard=false'
+                }else if(service == 'streamlabs'){
+                  url = 'https://streamlabs.com/dashboard/recent-events'
+                }
+
+                var state = item.checked;
+
+                if (state || activityFeedWindow) {
+                  activityFeedWindow.close()
+                } else {
+                  activityFeedWindow = createPanel(100, 100, url)
+                }
+              },
+            },
+            {
+              label: "Edit stream info",
+              type: "checkbox",
+              checked: editStreamInfo,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || editStreamInfoWindow) {
+                  editStreamInfoWindow.close()
+                } else {
+                  editStreamInfoWindow = createPanel(460, 620, `${twitchPanelBaseURL}/edit-stream-info`)
+                }
+    
+                settings.set("menu", {
+                  editStreamInfo: state,
+                });   
+               
+              },
+            },
+            {
+              label: "Quick Actions",
+              type: "checkbox",
+              checked: quickActions,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || quickActionsWindow) {
+                  quickActionsWindow.close()
+                } else {
+                  quickActionsWindow = createPanel(100, 100, `${twitchPanelBaseURL}/quick-actions`)
+                }
+    
+                settings.set("menu", {
+                  quickActions: state,
+                });   
+              },
+            },
+            {
+              label: "Stream Preview",
+              type: "checkbox",
+              checked: streamPreview,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || streamPreviewWindow) {
+                  streamPreviewWindow.close()
+                } else {
+                  streamPreviewWindow = createPanel(100, 100, `${twitchPanelBaseURL}/stream-preview`)
+                }
+    
+                settings.set("menu", {
+                  streamPreview: state,
+                });   
+              },
+            },
+            {
+              label: "Moderation Actions",
+              type: "checkbox",
+              checked: moderationActions,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || moderationActionsWindow) {
+                  moderationActionsWindow.close()
+                } else {
+                  moderationActionsWindow = createPanel(100, 100, `${twitchPanelBaseURL}/moderation-actions`)
+                }
+    
+                settings.set("menu", {
+                  moderationActions: state,
+                }); 
+              },
+            },
+            {
+              label: "Predictions",
+              type: "checkbox",
+              checked: predictions,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || predictionsWindow) {
+                  predictionsWindow.close()
+                } else {
+                  predictionsWindow = createPanel(100, 100, `${twitchPanelBaseURL}/predictions`)
+                }
+    
+                settings.set("menu", {
+                  predictions: state,
+                }); 
+              },
+            },
+            {
+              label: "Stream Health",
+              type: "checkbox",
+              checked: streamHealth,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || streamHealthWindow) {
+                  streamHealthWindow.close()
+                } else {
+                  streamHealthWindow = createPanel(100, 100, `${twitchPanelBaseURL}/stream-health`)
+                }
+    
+                settings.set("menu", {
+                  streamHealth: state,
+                }); 
+              },
+            },
+            {
+              label: "Ads",
+              type: "checkbox",
+              checked: ads,
+              click: function (item, browser) {
+                var state = item.checked;
+                if (state || adsWindow) {
+                  adsWindow.close()
+                } else {
+                  adsWindow = createPanel(100, 100, `${twitchPanelBaseURL}/streamer-ads-manager-panel`)
+                }
+    
+                settings.set("menu", {
+                  ads: state,
+                }); 
+              },
+            },
+            {
+              label: "Rewards Queue",
+              type: "checkbox",
+              checked: rewardQueue,
+              click: function (item, browser) {
+
+                var state = item.checked;
+                if (state || rewardQueueWindow) {
+                  rewardQueueWindow.close()
+                } else {
+                  rewardQueueWindow = createPanel(100, 100, `${twitchPanelBaseURL}/reward-queue`)
+                }
+    
+                settings.set("menu", {
+                  rewardQueue: state,
+                }); 
+
+                createPanel(100, 100, `${twitchPanelBaseURL}/reward-queue`)
+              },
+            },
+            {
+              label: "Auto Mod Queue",
+              type: "checkbox",
+              checked: quickActions,
+              click: function (item, browser) {
+                createPanel(100, 100, `${twitchPanelBaseURL}/auto-mod-queue`)
+              },
+            },
+            {
+              label: "Hosting You",
+              type: "checkbox",
+              checked: quickActions,
+              click: function (item, browser) {
+                createPanel(100, 100, `${twitchPanelBaseURL}/hosting-you`)
+              },
+            },
+            {
+              label: "Active Mods",
+              type: "checkbox",
+              checked: quickActions,
+              click: function (item, browser) {
+                createPanel(100, 100, `${twitchPanelBaseURL}/active-mods`)
+              },
+            },
+            {
+              label: "Unban Requests",
+              type: "checkbox",
+              checked: quickActions,
+              click: function (item, browser) {
+                createPanel(100, 100, `${twitchPanelBaseURL}/unban-requests`)
+              },
+            },
+          ]
+        },*/
         { role: 'zoomin', accelerator: 'CommandOrControl+=' },
         { role: 'zoomout' },
         {
@@ -143,31 +364,23 @@ async function createWindow () {
   chatWindow.setMenu(Menu.buildFromTemplate(menu))
 
   // Loads the twitch's chat popup for the user channel
-  chatWindow.loadURL('https://www.twitch.tv/popout/'+ channel +'/chat?popout=')
-
+  //chatWindow.loadURL(`https://www.twitch.tv/popout/${channel}/chat?popout=`)
+  chatWindow.loadURL(`https://chitchat.ma.pe/${channel}`)
   // loads BTTV, FFZ and 7tv
-  session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
+  //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
 
-  chatWindow.webContents.on('dom-ready', () => loadEmotes(chatWindow) )
+  chatWindow.webContents.on('dom-ready', () => {
+    //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
+    //loadEmotes(chatWindow)
+
+    chatWindow.webContents.executeJavaScript(injected.style)
+
+  
+  })
+
   // Open the DevTools.
   if (isDev) chatWindow.webContents.openDevTools()
-}
-
-function loadEmotes(window) {
-  // loads bttv emotes if their are enabled
-  window.webContents.executeJavaScript(enableBTTVEmotesScript(isDarkTheme),true);
-
-  // loads ffz emotes if their are enabled
-  window.webContents.executeJavaScript(
-    `
-      var ffzscript1 = document.createElement('script');
-      ffzscript1.setAttribute('src','https://cdn.frankerfacez.com/script/script.min.js');
-      document.head.appendChild(ffzscript1);
-      0;
-    `,
-    true,
-    );
 }
 
 // This method will be called when Electron has finished
