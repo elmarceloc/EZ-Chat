@@ -84,6 +84,12 @@ async function createWindow () {
       }
     },
     {
+      label: 'Settings',
+      click() {
+        chatWindow.webContents.executeJavaScript('document.querySelector(".setting button").click()');
+      }
+    },
+    {
       label: 'Ver',
       submenu: [
         {

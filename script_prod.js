@@ -50,6 +50,9 @@ button{
     color: none!important;
     filter: none!important
 }
+.settings{
+    display:none!important
+}
 </style>
 `;
 
