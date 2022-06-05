@@ -51,7 +51,7 @@ button{
     filter: none!important
 }
 .settings{
-    display:none!important
+    opacity:0%!important
 }
 </style>
 `;
