@@ -50,7 +50,7 @@ button{
     color: none!important;
     filter: none!important
 }
-.settings{
+.settings button{
     opacity:0%!important
 }
 </style>

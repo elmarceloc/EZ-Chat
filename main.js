@@ -15,6 +15,24 @@ isDarkTheme = true;
 
 var service = 'streamelements'
 
+
+function createPanel(width, height, url) {
+  // Create the browser window.
+  const window = new BrowserWindow({
+    width: width,
+    height: height,
+    parent: chatWindow,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
+  
+  window.loadURL(url)
+
+  return window
+}
+
 var chatWindow;
 
 async function createWindow () {
@@ -109,6 +127,15 @@ async function createWindow () {
               alwaysontop: state,
             });   
           },
+        },
+        {
+          role: 'separator',
+        },
+        {
+          label: "Edit stream info",
+          click: function () {
+              editStreamInfoWindow = createPanel(460, 620, `${twitchPanelBaseURL}/edit-stream-info`)             
+          }
         },
         /*{
           label: 'Open stream in Browser',
