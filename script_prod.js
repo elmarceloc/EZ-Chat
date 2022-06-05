@@ -14,7 +14,8 @@ body{
 
 .title{
     background: #131315!important;
-    
+    -webkit-app-region: drag;
+
 }
 
 .newSub{

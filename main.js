@@ -58,7 +58,8 @@ async function createWindow () {
     y: chatWindowState.y,
     width: chatWindowState.width,
     height: chatWindowState.height,
-    //autoHideMenuBar: true,
+    frame: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -361,12 +362,12 @@ async function createWindow () {
   chatWindow.loadURL(`https://chitchat.ma.pe/${channel}`)
   // loads BTTV, FFZ and 7tv
   //session.defaultSession.loadExtension(isDev ? localPath : extensionPath)
-  const response = await axios.get(
-    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
-  )
-
+  
   console.log('script loaded',response.data.length)
-  chatWindow.webContents.on('dom-ready', () => {
+  chatWindow.webContents.on('dom-ready', async () => {
+    const response = await axios.get(
+      'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
+    )
     //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
     //loadEmotes(chatWindow)
