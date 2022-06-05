@@ -341,3 +341,5 @@ observer.observe(chit, config);
 observer.observe(chat, config);
 
 getEmotes() 
+
+console.log('script loaded')

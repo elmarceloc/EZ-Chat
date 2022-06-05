@@ -341,16 +341,17 @@ async function createWindow () {
   var script = fs.readFileSync('script_prod.js', 'utf8');
   console.log(script)
 
-  /*script = await axios.get(
-    'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
-  )/*/
-  chatWindow.webContents.on('dom-ready', () => {
+
+  chatWindow.webContents.on('dom-ready', async () => {
     //chatWindow.webContents.executeJavaScript(tabs.addTab(),true)
     
     //loadEmotes(chatWindow)
+    script = await axios.get(
+      'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
+    )
 
     chatWindow.webContents.executeJavaScript(script)
-
+    console.log(script)
   
   })
   // open urls in the default browser
