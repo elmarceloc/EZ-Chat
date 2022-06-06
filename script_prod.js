@@ -122,6 +122,11 @@ async function getEmotes() {
                 emoteName: res.sharedEmotes[i].code,
                 emoteURL: `https://cdn.betterttv.net/emote/${res.sharedEmotes[i].id}/2x`,
             };
+
+            if (emote.emoteName != 'FeelsStrongMan') {
+                emotes.push(emote);
+            }
+
             emotes.push(emote);
         }
         console.log(emotes);
@@ -179,7 +184,7 @@ async function getEmotes() {
                     };
                     
                     
-                    if (emote.emoteName != "AYAYA" && emote.emoteName != "peepoHappy" && emote.emoteName != 'FeelsStrongMan') {
+                    if (emote.emoteName != "AYAYA" && emote.emoteName != "peepoHappy") {
                         emotes.push(emote);
                     }
                 }
