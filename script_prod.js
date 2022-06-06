@@ -179,7 +179,7 @@ async function getEmotes() {
                     };
                     
                     
-                    if (emote.emoteName != "AYAYA" && emote.emoteName != "peepoHappy") {
+                    if (emote.emoteName != "AYAYA" && emote.emoteName != "peepoHappy" && emote.emoteName != 'FeelsStrongMan') {
                         emotes.push(emote);
                     }
                 }
