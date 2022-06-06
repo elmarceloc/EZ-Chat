@@ -1,5 +1,5 @@
 
-const someStyle = `
+var someStyle = `
 <style>
 html, body{
     background: #131315!important;
@@ -165,7 +165,7 @@ async function getEmotes() {
             totalErrors.push("Error getting 7tv emotes");
         }
         // get all 7TV global emotes
-        res = await fetch(`https://api.7tv.app/v2/emotes/global`, {
+        /*res = await fetch(`https://api.7tv.app/v2/emotes/global`, {
             method: "GET",
         }).then(returnResponse, logError);
         if (!res.error || res.status == 200) {
@@ -182,7 +182,7 @@ async function getEmotes() {
             }
         } else {
             totalErrors.push("Error getting 7tv global emotes");
-        }
+        }*/
 
 
                    

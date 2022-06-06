@@ -395,14 +395,14 @@ async function createWindow () {
   // Add an item to the context menu that appears only when you click on an image
   contextMenu({
     prepend: (defaultActions, parameters, browserWindow) => [{
-      label: 'Ver Mensajes',
+      label: 'Ver perfil',
       click: (menuItem, browserWindow, event) => {
         console.log(parameters)
         
         chatWindow.webContents.executeJavaScript(`
-        const username = document.elementFromPoint(${parameters.x}, ${parameters.y}).innerText;
+        var usernameCard = document.elementFromPoint(${parameters.x}, ${parameters.y}).innerText;
         
-        window.open('https://www.twitch.tv/popout/${channel}username/viewercard/'+username, '_blank').focus();
+        window.open('https://www.twitch.tv/popout/${channel}/viewercard/'+usernameCard, '_blank').focus();
         `)
       }
     }]
