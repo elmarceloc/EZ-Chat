@@ -177,8 +177,9 @@ async function getEmotes() {
                         emoteName: res[i].name,
                         emoteURL: res[i].urls[1][1],
                     };
-                    // check if is not in emotes
-                    if (!emotes.some(e => e.emoteName === emote.emoteName)) {   
+                    
+                    
+                    if (emote.emoteName != "AYAYA" || emote.emoteName != "peepoHappy") {
                         emotes.push(emote);
                     }
                 }
