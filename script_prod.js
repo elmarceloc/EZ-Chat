@@ -165,7 +165,7 @@ async function getEmotes() {
             totalErrors.push("Error getting 7tv emotes");
         }
         // get all 7TV global emotes
-        /*res = await fetch(`https://api.7tv.app/v2/emotes/global`, {
+        res = await fetch(`https://api.7tv.app/v2/emotes/global`, {
             method: "GET",
         }).then(returnResponse, logError);
         if (!res.error || res.status == 200) {
@@ -177,12 +177,15 @@ async function getEmotes() {
                         emoteName: res[i].name,
                         emoteURL: res[i].urls[1][1],
                     };
-                    emotes.push(emote);
+                    // check if is not in emotes
+                    if (!emotes.some(emote => emote.emoteName === emote.emoteName)) {   
+                        emotes.push(emote);
+                    }
                 }
             }
         } else {
             totalErrors.push("Error getting 7tv global emotes");
-        }*/
+        }
 
 
                    
