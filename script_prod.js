@@ -38,6 +38,12 @@ html, body{
     padding-left: 6px!important;
     padding-right: 10px!important;
 }
+.Message:hover{
+    background: #464649!important;
+}
+.message{
+    color:white!important;
+}
 button{
     font-size: 12px!important;
     border: none!important;
