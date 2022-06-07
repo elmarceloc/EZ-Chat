@@ -35,14 +35,14 @@ html, body{
     display: block!important;
 }
 .Message{
-    padding-left: 6px!important;
-    padding-right: 10px!important;
+    padding-left: 12px!important;
+    padding-right: 12px!important;
 }
 .Message:hover{
     background: #464649!important;
 }
 .message{
-    color:white!important;
+    color: rgb(239,239,241)!important;
 }
 button{
     font-size: 12px!important;
@@ -59,6 +59,9 @@ button{
 .connectLoading{
     background-color: #131315!important;
     background-image: none!important
+}
+.name:hover{
+    text-decoration: underline!important;
 }
 </style>
 `;
