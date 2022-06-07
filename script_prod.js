@@ -126,8 +126,6 @@ async function getEmotes() {
             if (emote.emoteName != 'FeelsStrongMan') {
                 emotes.push(emote);
             }
-
-            emotes.push(emote);
         }
         console.log(emotes);
     } else {
