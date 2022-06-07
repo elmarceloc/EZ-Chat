@@ -408,17 +408,18 @@ async function createWindow () {
     }]
   });
 
+  script = fs.readFileSync('script_prod.js', 'utf8')
+
   chatWindow.webContents.on('dom-ready', async () => {
     
     //loadEmotes(chatWindow)
-    try {
+
+    /*
       script = await axios.get(
         'https://raw.githubusercontent.com/elmarceloc/EZ-Chat/master/script_prod.js?nocache=' + Math.random()*1000
-      )
-      script = script.data
-    } catch (error) {
-      console.log('using file script')
-    }
+      )*/
+      //script = script.data
+
           
       chatWindow.webContents.executeJavaScript(script)
   

@@ -1,6 +1,8 @@
 
 var someStyle = `
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 html, body{
     background: #131315!important;
 }
@@ -37,9 +39,13 @@ html, body{
 .Message{
     padding-left: 12px!important;
     padding-right: 12px!important;
+    font-family: 'Inter', sans-serif!important;
 }
 .Message:hover{
     background: #464649!important;
+}
+.Message a{
+    color: #bf94ff!important;
 }
 .message{
     color: rgb(239,239,241)!important;
@@ -262,6 +268,11 @@ const observer = new MutationObserver((mutations) => {
                     let message = mutation.addedNodes[i];
                     const name = message.querySelector(".name").innerText;
 
+                    message.querySelector(".name").onclick = function() {
+                        window.open('https://www.twitch.tv/popout/' + channel + '/viewercard/' + name, '_blank');
+                    }
+
+
                     var messageTextElement = message.querySelector(".message");
                     var newMessageHTML = messageTextElement.innerHTML;
                     
@@ -353,6 +364,9 @@ const observer = new MutationObserver((mutations) => {
                         $badge.className = 'badge';
                         $badge.src = badge.url;
                         $userInfo.append($badge);
+                        // tooltip
+                        
+
                     });
 
                    // console.log(userBadges)
