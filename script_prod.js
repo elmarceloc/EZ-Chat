@@ -69,6 +69,24 @@ button{
 .name:hover{
     text-decoration: underline!important;
 }
+.header{
+    z-index: 100;
+    height: 27px;
+    position: absolute;
+    background: #2C2C2C;
+    width: 100%;
+}
+.header-icon{
+    font-size: 18px;
+    padding-top: 2px;
+    display: inline-block;
+}
+#viewers{
+    padding-left: 4px;
+}
+#category{
+    padding-left: 10px;
+}
 </style>
 `;
 
@@ -98,6 +116,13 @@ var badges = []
 var mods = []
 
 async function getEmotes() {
+
+    // load font awesome
+    var fontawesome = document.createElement("script");
+    fontawesome.src = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.js";
+    document.head.appendChild(fontawesome);
+
+    
     function returnResponse(response) {
         return response.json();
     }
@@ -240,7 +265,52 @@ async function getEmotes() {
                 
             });
         })
-        
+
+                
+
+
+        // create header and append to Dashboard class
+        let header = document.createElement("div");
+        header.className = "header";
+        header.innerHTML = `
+        <div>  </div>`;
+        // font awesome closed eye icon in literal
+        `<i class="fas fa-eye-slash"></i>`;
+
+
+        header.innerHTML += `
+        <div class="header-icon" id="viewers">
+            <i id="eye-icon" class="fas fa-eye-slash"></i>
+            <span id="viewers-count">0</span>
+        </div>
+        <div class="header-icon" id="category">
+            <i class="fas fa-tag"></i>
+            <span id="category-name"></span>
+        </div>
+        `;
+
+        fetchLive()
+            
+
+            document.getElementsByClassName("Dashboard")[0].appendChild(header);
+
+            document.querySelector('#viewers-count').style.display = 'none';
+
+            document.querySelector('#viewers').addEventListener('click', function() {
+                if(document.querySelector('#eye-icon').classList.contains('fa-eye')) {
+                    document.querySelector('#eye-icon').classList.remove('fa-eye');
+                    document.querySelector('#eye-icon').classList.add('fa-eye-slash');
+                    // hide viewers
+                    document.querySelector('#viewers-count').style.display = 'none';
+
+                } else {
+                    document.querySelector('#eye-icon').classList.remove('fa-eye-slash');
+                    document.querySelector('#eye-icon').classList.add('fa-eye');
+                    // show viewers
+                    document.querySelector('#viewers-count').style.display = '';
+                }
+            })
+
 
     if (totalErrors.length > 0) {
         totalErrors.forEach((error) => {
@@ -252,7 +322,32 @@ function escapeRegex(string) {
 	return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
+function fetchLive(){
+    fetch('https://api.twitch.tv/helix/streams?user_id='+twitchID, {
+        headers: {
+            'Client-ID': 'gp762nuuoqcoxypju8c569th9wz7q5',
+            'Authorization': 'Bearer '+'mwzdhwmjt4ofrdhjnf560u4f3ar9ps'
+        }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log(data)
 
+        if(data.data[0] != undefined) {
+            // format viewer_count as number
+            let viewer_count = data.data[0].viewer_count;
+            viewer_count = viewer_count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+           document.querySelector('#viewers-count').innerHTML = viewer_count;
+           document.querySelector('#category-name').innerHTML = data.data[0].game_name;
+
+        }
+        
+    });
+
+}
+
+setInterval(fetchLive, 10000);
 
 var chit = document.querySelectorAll('.inner')[0];
 var chat = document.querySelectorAll('.inner')[1];
@@ -313,7 +408,6 @@ const observer = new MutationObserver((mutations) => {
 
 
                     if(mods.includes(name.toLowerCase())){
-                        console.log(name+' is mod')
                         userBadges.push({
                             url: badges['moderator:1']
                         }) 
