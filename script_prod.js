@@ -75,10 +75,11 @@ button{
     position: absolute;
     background: #2C2C2C;
     width: 100%;
+    font-family: 'Inter', sans-serif!important;
 }
 .header-icon{
     font-size: 18px;
-    padding-top: 2px;
+    padding-top: 4px;
     display: inline-block;
 }
 #viewers{
@@ -287,29 +288,29 @@ async function getEmotes() {
             <i class="fas fa-tag"></i>
             <span id="category-name"></span>
         </div>
+        
         `;
 
         fetchLive()
             
+        document.getElementsByClassName("Dashboard")[0].appendChild(header);
 
-            document.getElementsByClassName("Dashboard")[0].appendChild(header);
+        document.querySelector('#viewers-count').style.display = 'none';
 
-            document.querySelector('#viewers-count').style.display = 'none';
+        document.querySelector('#viewers').addEventListener('click', function() {
+            if(document.querySelector('#eye-icon').classList.contains('fa-eye')) {
+                document.querySelector('#eye-icon').classList.remove('fa-eye');
+                document.querySelector('#eye-icon').classList.add('fa-eye-slash');
+                // hide viewers
+                document.querySelector('#viewers-count').style.display = 'none';
 
-            document.querySelector('#viewers').addEventListener('click', function() {
-                if(document.querySelector('#eye-icon').classList.contains('fa-eye')) {
-                    document.querySelector('#eye-icon').classList.remove('fa-eye');
-                    document.querySelector('#eye-icon').classList.add('fa-eye-slash');
-                    // hide viewers
-                    document.querySelector('#viewers-count').style.display = 'none';
-
-                } else {
-                    document.querySelector('#eye-icon').classList.remove('fa-eye-slash');
-                    document.querySelector('#eye-icon').classList.add('fa-eye');
-                    // show viewers
-                    document.querySelector('#viewers-count').style.display = '';
-                }
-            })
+            } else {
+                document.querySelector('#eye-icon').classList.remove('fa-eye-slash');
+                document.querySelector('#eye-icon').classList.add('fa-eye');
+                // show viewers
+                document.querySelector('#viewers-count').style.display = '';
+            }
+        })
 
 
     if (totalErrors.length > 0) {
@@ -338,8 +339,9 @@ function fetchLive(){
             let viewer_count = data.data[0].viewer_count;
             viewer_count = viewer_count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-           document.querySelector('#viewers-count').innerHTML = viewer_count;
-           document.querySelector('#category-name').innerHTML = data.data[0].game_name;
+            document.querySelector('#viewers-count').innerHTML = viewer_count;
+            document.querySelector('#category-name').innerHTML = data.data[0].game_name;
+            //document.querySelector('#title-name').innerHTML = data.data[0].title;   
 
         }
         
