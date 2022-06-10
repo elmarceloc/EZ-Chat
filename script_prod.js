@@ -93,6 +93,7 @@ button{
 
 document.head.insertAdjacentHTML('beforeend', someStyle);
 
+
 // Get URL Parameters (Credit to html-online.com)
 function getUrlVars() {
     var vars = {};
@@ -115,6 +116,8 @@ let emotes = [];
 let twitchID;
 var badges = []
 var mods = []
+
+document.title = 'EZ Chat - '+ channel;
 
 async function getEmotes() {
 
