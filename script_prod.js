@@ -117,7 +117,11 @@ let twitchID;
 var badges = []
 var mods = []
 
-document.title = 'EZ Chat - '+ channel;
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+document.title = 'EZ Chat - '+ capitalizeFirstLetter(channel);
 
 async function getEmotes() {
 
